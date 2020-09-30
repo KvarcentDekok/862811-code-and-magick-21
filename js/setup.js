@@ -1,6 +1,5 @@
 "use strict";
 
-const setupBlock = document.querySelector(`.setup`);
 const names = [`Иван`, `Хуан Себастьян`, `Мария`, `Кристоф`, `Виктор`, `Юлия`, `Люпита`, `Вашингтон`];
 const surnames = [`да Марья`, `Верон`, `Мирабелла`, `Вальц`, `Онопко`, `Топольницкая`, `Нионго`, `Ирвинг`];
 const coatColors = [
@@ -12,6 +11,18 @@ const coatColors = [
   `rgb(0, 0, 0)`
 ];
 const eyesColors = [`black`, `red`, `blue`, `yellow`, `green`];
+const fireballColors = [`#ee4830`, `#30a8ee`, `#5ce6c0`, `#e848d5`, `#e6e848`];
+const setupBlock = document.querySelector(`.setup`);
+const setupOpen = document.querySelector(`.setup-open`);
+const setupClose = setupBlock.querySelector(`.setup-close`);
+const setupUserName = setupBlock.querySelector(`.setup-user-name`);
+const setupWizard = setupBlock.querySelector(`.setup-wizard`);
+const setupWizardCoat = setupWizard.querySelector(`.wizard-coat`);
+const setupWizardEyes = setupWizard.querySelector(`.wizard-eyes`);
+const setupWizardFireball = setupBlock.querySelector(`.setup-fireball-wrap`);
+const coatColorInput = setupBlock.querySelector(`[name="coat-color"]`);
+const eyesColorInput = setupBlock.querySelector(`[name="eyes-color"]`);
+const fireballColorInput = setupWizardFireball.querySelector(`[name="fireball-color"]`);
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -65,6 +76,70 @@ function initSimilarWizards() {
   setupSimilarBlock.classList.remove(`hidden`);
 }
 
-initSimilarWizards();
+function onPopupEscPress(evt) {
+  const activeElement = document.activeElement;
 
-setupBlock.classList.remove(`hidden`);
+  if (evt.key === `Escape` && activeElement !== setupUserName) {
+    evt.preventDefault();
+    closePopup();
+  }
+}
+
+function openPopup() {
+  setupBlock.classList.remove(`hidden`);
+
+  document.addEventListener(`keydown`, onPopupEscPress);
+}
+
+function closePopup() {
+  setupBlock.classList.add(`hidden`);
+
+  document.removeEventListener(`keydown`, onPopupEscPress);
+}
+
+function changeColor(colors, input, element, property) {
+  let color;
+
+  if (colors.indexOf(input.value) === colors.length - 1) {
+    color = colors[0];
+  } else {
+    color = colors[colors.indexOf(input.value) + 1];
+  }
+
+  element.style[property] = color;
+  input.value = color;
+}
+
+setupOpen.addEventListener(`click`, function () {
+  openPopup();
+});
+
+setupOpen.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener(`click`, function () {
+  closePopup();
+});
+
+setupClose.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    closePopup();
+  }
+});
+
+setupWizardCoat.addEventListener(`click`, function () {
+  changeColor(coatColors, coatColorInput, setupWizardCoat, `fill`);
+});
+
+setupWizardEyes.addEventListener(`click`, function () {
+  changeColor(eyesColors, eyesColorInput, setupWizardEyes, `fill`);
+});
+
+setupWizardFireball.addEventListener(`click`, function () {
+  changeColor(fireballColors, fireballColorInput, setupWizardFireball, `background`);
+});
+
+initSimilarWizards();
