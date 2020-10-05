@@ -1,6 +1,8 @@
 "use strict";
 
 (function () {
+  const NUMBER_OF_WIZARDS = 4;
+
   const names = [`Иван`, `Хуан Себастьян`, `Мария`, `Кристоф`, `Виктор`, `Юлия`, `Люпита`, `Вашингтон`];
   const surnames = [`да Марья`, `Верон`, `Мирабелла`, `Вальц`, `Онопко`, `Топольницкая`, `Нионго`, `Ирвинг`];
   const setupBlock = document.querySelector(`.setup`);
@@ -25,8 +27,6 @@
   }
 
   function initSimilarWizards() {
-    const NUMBER_OF_WIZARDS = 4;
-
     const wizards = [];
     const similarWizardTemplate = document.querySelector(`#similar-wizard-template`)
       .content
@@ -38,8 +38,8 @@
     for (let i = 0; i < NUMBER_OF_WIZARDS; i++) {
       wizards[i] = {
         name: getName(),
-        coatColor: window.util.getRandomElement(window.colors.coat),
-        eyesColor: window.util.getRandomElement(window.colors.eyes)
+        coatColor: window.util.getRandomElem(window.colorize.coat),
+        eyesColor: window.util.getRandomElem(window.colorize.eyes)
       };
 
       similarWizardsFragment.appendChild(renderWizard(wizards[i], similarWizardTemplate));

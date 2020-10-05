@@ -25,7 +25,7 @@
       renderText(ctx, FONT, leftX + (BAR_WIDTH + GAP) * i, bottomY, names[i], TEXT_COLOR);
 
       let barColor;
-      let maxTime = window.util.getMaxElement(times);
+      let maxTime = window.util.getMaxElem(times);
       let currentHeightBar = maxHeightBar * times[i] / maxTime;
       let currentYBar = minYBar + (maxHeightBar - currentHeightBar);
       let currentYTime = currentYBar - 20;

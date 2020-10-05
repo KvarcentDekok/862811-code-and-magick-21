@@ -12,21 +12,23 @@
   const eyesColors = [`black`, `red`, `blue`, `yellow`, `green`];
   const fireballColors = [`#ee4830`, `#30a8ee`, `#5ce6c0`, `#e848d5`, `#e6e848`];
 
-  window.colors = {
+  function changeColor(colors, input, element, property) {
+    let color;
+
+    if (colors.indexOf(input.value) === colors.length - 1) {
+      color = colors[0];
+    } else {
+      color = colors[colors.indexOf(input.value) + 1];
+    }
+
+    element.style[property] = color;
+    input.value = color;
+  }
+
+  window.colorize = {
     coat: coatColors,
     eyes: eyesColors,
     fireball: fireballColors,
-    change(colors, input, element, property) {
-      let color;
-
-      if (colors.indexOf(input.value) === colors.length - 1) {
-        color = colors[0];
-      } else {
-        color = colors[colors.indexOf(input.value) + 1];
-      }
-
-      element.style[property] = color;
-      input.value = color;
-    }
+    changeColorNext: changeColor
   };
 })();

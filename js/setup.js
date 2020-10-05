@@ -56,14 +56,14 @@
   });
 
   setupWizardCoat.addEventListener(`click`, function () {
-    window.colors.change(window.colors.coat, coatColorInput, setupWizardCoat, `fill`);
+    window.colorize.changeColorNext(window.colorize.coat, coatColorInput, setupWizardCoat, `fill`);
   });
 
   setupWizardEyes.addEventListener(`click`, function () {
-    window.colors.change(window.colors.eyes, eyesColorInput, setupWizardEyes, `fill`);
+    window.colorize.changeColorNext(window.colorize.eyes, eyesColorInput, setupWizardEyes, `fill`);
   });
 
   setupWizardFireball.addEventListener(`click`, function () {
-    window.colors.change(window.colors.fireball, fireballColorInput, setupWizardFireball, `background`);
+    window.colorize.changeColorNext(window.colorize.fireball, fireballColorInput, setupWizardFireball, `background`);
   });
 })();
