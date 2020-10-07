@@ -26,13 +26,9 @@
       .querySelector(`.setup-similar-item`);
     const similarWizardsFragment = document.createDocumentFragment();
 
-    let wizardsNumber;
+    let wizardsNumber = NUMBER_OF_WIZARDS > wizards.length ? wizards.length : NUMBER_OF_WIZARDS;
 
-    if (NUMBER_OF_WIZARDS > wizards.length) {
-      wizardsNumber = wizards.length;
-    } else {
-      wizardsNumber = NUMBER_OF_WIZARDS;
-    }
+    setupSimilarListBlock.textContent = ``;
 
     for (let i = 0; i < wizardsNumber; i++) {
       similarWizardsFragment.appendChild(renderWizard(window.util.getRandomElem(wizards), similarWizardTemplate));

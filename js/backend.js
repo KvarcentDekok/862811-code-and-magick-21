@@ -5,7 +5,7 @@
   const SAVE_URL = `https://21.javascript.pages.academy/code-and-magick`;
   const TIMEOUT_IN_MS = 10000;
 
-  const statusCode = {
+  const StatusCode = {
     OK: 200
   };
 
@@ -15,7 +15,7 @@
     xhr.responseType = `json`;
 
     xhr.addEventListener(`load`, function () {
-      if (xhr.status === statusCode.OK) {
+      if (xhr.status === StatusCode.OK) {
         options.onLoad(xhr.response);
       } else {
         options.onError(`Статус ответа: ${xhr.status} ${xhr.statusText}`);
