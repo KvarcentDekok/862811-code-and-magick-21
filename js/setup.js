@@ -3,6 +3,7 @@
 (function () {
   const setupBlock = document.querySelector(`.setup`);
   const setupOpen = document.querySelector(`.setup-open`);
+  const setupForm = setupBlock.querySelector(`.setup-wizard-form`);
   const setupClose = setupBlock.querySelector(`.setup-close`);
   const setupUserName = setupBlock.querySelector(`.setup-user-name`);
   const setupWizard = setupBlock.querySelector(`.setup-wizard`);
@@ -12,6 +13,8 @@
   const coatColorInput = setupBlock.querySelector(`[name="coat-color"]`);
   const eyesColorInput = setupBlock.querySelector(`[name="eyes-color"]`);
   const fireballColorInput = setupWizardFireball.querySelector(`[name="fireball-color"]`);
+
+  let isSimilarWizardsLoaded = false;
 
   function onPopupEscPress(evt) {
     const activeElement = document.activeElement;
@@ -25,6 +28,17 @@
   function openPopup() {
     setupBlock.classList.remove(`hidden`);
 
+    if (!isSimilarWizardsLoaded) {
+      window.backend.load(
+          function (response) {
+            window.similarWizards.init(response);
+            isSimilarWizardsLoaded = true;
+          },
+          function (error) {
+            window.similarWizards.error(`Не удалось загрузить похожих волшебников: ${error}`);
+          });
+    }
+
     document.addEventListener(`keydown`, onPopupEscPress);
   }
 
@@ -33,6 +47,34 @@
     setupBlock.removeAttribute(`style`);
 
     document.removeEventListener(`keydown`, onPopupEscPress);
+  }
+
+  function errorSubmit(errorMessage) {
+    const node = document.createElement(`div`);
+
+    node.classList.add(`error`);
+    node.textContent = errorMessage;
+
+    document.body.insertAdjacentElement(`afterbegin`, node);
+  }
+
+  function submitForm(evt) {
+    const errorBlock = document.querySelector(`.error`);
+
+    if (errorBlock) {
+      errorBlock.remove();
+    }
+
+    evt.preventDefault();
+
+    window.backend.save(
+        new FormData(setupForm),
+        function () {
+          closePopup();
+        },
+        function (error) {
+          errorSubmit(error);
+        });
   }
 
   setupOpen.addEventListener(`click`, function () {
@@ -65,5 +107,9 @@
 
   setupWizardFireball.addEventListener(`click`, function () {
     window.colorize.changeColorNext(window.colorize.fireball, fireballColorInput, setupWizardFireball, `background`);
+  });
+
+  setupForm.addEventListener(`submit`, function (evt) {
+    submitForm(evt);
   });
 })();

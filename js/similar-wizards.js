@@ -3,15 +3,9 @@
 (function () {
   const NUMBER_OF_WIZARDS = 4;
 
-  const names = [`Иван`, `Хуан Себастьян`, `Мария`, `Кристоф`, `Виктор`, `Юлия`, `Люпита`, `Вашингтон`];
-  const surnames = [`да Марья`, `Верон`, `Мирабелла`, `Вальц`, `Онопко`, `Топольницкая`, `Нионго`, `Ирвинг`];
   const setupBlock = document.querySelector(`.setup`);
-
-  function getName() {
-    const name = names[window.util.getRandomInt(0, names.length - 1)];
-    const surname = surnames[window.util.getRandomInt(0, surnames.length - 1)];
-    return `${name} ${surname}`;
-  }
+  const setupSimilarBlock = setupBlock.querySelector(`.setup-similar`);
+  const setupSimilarListBlock = setupSimilarBlock.querySelector(`.setup-similar-list`);
 
   function renderWizard(wizard, similarWizardTemplate) {
     const wizardElement = similarWizardTemplate.cloneNode(true);
@@ -20,34 +14,37 @@
     const wizardEyes = wizardElement.querySelector(`.wizard-eyes`);
 
     setupSimilarLabel.textContent = wizard.name;
-    wizardCoat.style.fill = wizard.coatColor;
-    wizardEyes.style.fill = wizard.eyesColor;
+    wizardCoat.style.fill = wizard.colorCoat;
+    wizardEyes.style.fill = wizard.colorEyes;
 
     return wizardElement;
   }
 
-  function initSimilarWizards() {
-    const wizards = [];
+  function initSimilarWizards(wizards) {
     const similarWizardTemplate = document.querySelector(`#similar-wizard-template`)
       .content
       .querySelector(`.setup-similar-item`);
     const similarWizardsFragment = document.createDocumentFragment();
-    const setupSimilarBlock = setupBlock.querySelector(`.setup-similar`);
-    const setupSimilarListBlock = setupSimilarBlock.querySelector(`.setup-similar-list`);
 
-    for (let i = 0; i < NUMBER_OF_WIZARDS; i++) {
-      wizards[i] = {
-        name: getName(),
-        coatColor: window.util.getRandomElem(window.colorize.coat),
-        eyesColor: window.util.getRandomElem(window.colorize.eyes)
-      };
+    let wizardsNumber = NUMBER_OF_WIZARDS > wizards.length ? wizards.length : NUMBER_OF_WIZARDS;
 
-      similarWizardsFragment.appendChild(renderWizard(wizards[i], similarWizardTemplate));
+    setupSimilarListBlock.textContent = ``;
+
+    for (let i = 0; i < wizardsNumber; i++) {
+      similarWizardsFragment.appendChild(renderWizard(window.util.getRandomElem(wizards), similarWizardTemplate));
     }
 
     setupSimilarListBlock.appendChild(similarWizardsFragment);
     setupSimilarBlock.classList.remove(`hidden`);
   }
 
-  initSimilarWizards();
+  function errorHandler(error) {
+    setupSimilarListBlock.textContent = error;
+    setupSimilarBlock.classList.remove(`hidden`);
+  }
+
+  window.similarWizards = {
+    init: initSimilarWizards,
+    error: errorHandler
+  };
 })();
