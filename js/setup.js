@@ -31,7 +31,7 @@
     if (!isSimilarWizardsLoaded) {
       window.backend.load(
           function (response) {
-            window.similarWizards.init(response);
+            window.similarWizards.update(response);
             isSimilarWizardsLoaded = true;
           },
           function (error) {
@@ -98,11 +98,19 @@
   });
 
   setupWizardCoat.addEventListener(`click`, function () {
-    window.colorize.changeColorNext(window.colorize.coat, coatColorInput, setupWizardCoat, `fill`);
+    window.similarWizards.update(
+        null,
+        window.colorize.changeColorNext(window.colorize.coat, coatColorInput, setupWizardCoat, `fill`),
+        `coat`
+    );
   });
 
   setupWizardEyes.addEventListener(`click`, function () {
-    window.colorize.changeColorNext(window.colorize.eyes, eyesColorInput, setupWizardEyes, `fill`);
+    window.similarWizards.update(
+        null,
+        window.colorize.changeColorNext(window.colorize.eyes, eyesColorInput, setupWizardEyes, `fill`),
+        `eyes`
+    );
   });
 
   setupWizardFireball.addEventListener(`click`, function () {
