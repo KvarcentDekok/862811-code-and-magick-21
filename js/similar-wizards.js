@@ -7,6 +7,25 @@
   const setupSimilarBlock = setupBlock.querySelector(`.setup-similar`);
   const setupSimilarListBlock = setupSimilarBlock.querySelector(`.setup-similar-list`);
 
+  let wizardsData = [];
+  let currentColors = {
+    coat: `rgb(101, 137, 164)`,
+    eyes: `black`
+  };
+
+  function getRank(wizard) {
+    let rank = 0;
+
+    if (wizard.colorCoat === currentColors.coat) {
+      rank += 2;
+    }
+    if (wizard.colorEyes === currentColors.eyes) {
+      rank += 1;
+    }
+
+    return rank;
+  }
+
   function renderWizard(wizard, similarWizardTemplate) {
     const wizardElement = similarWizardTemplate.cloneNode(true);
     const setupSimilarLabel = wizardElement.querySelector(`.setup-similar-label`);
@@ -20,6 +39,24 @@
     return wizardElement;
   }
 
+  function updateSimilarWizards(data, currentColor, currentElement) {
+    let wizards;
+
+    if (data) {
+      wizardsData = data;
+      wizards = data;
+    } else {
+      wizards = wizardsData;
+    }
+
+    currentColors[currentElement] = currentColor;
+    wizards = wizards.sort(function (left, right) {
+      return getRank(right) - getRank(left);
+    });
+
+    initSimilarWizards(wizards);
+  }
+
   function initSimilarWizards(wizards) {
     const similarWizardTemplate = document.querySelector(`#similar-wizard-template`)
       .content
@@ -31,7 +68,7 @@
     setupSimilarListBlock.textContent = ``;
 
     for (let i = 0; i < wizardsNumber; i++) {
-      similarWizardsFragment.appendChild(renderWizard(window.util.getRandomElem(wizards), similarWizardTemplate));
+      similarWizardsFragment.appendChild(renderWizard(wizards[i], similarWizardTemplate));
     }
 
     setupSimilarListBlock.appendChild(similarWizardsFragment);
@@ -44,7 +81,7 @@
   }
 
   window.similarWizards = {
-    init: initSimilarWizards,
-    error: errorHandler
+    error: errorHandler,
+    update: window.debounce(updateSimilarWizards)
   };
 })();

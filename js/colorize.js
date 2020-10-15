@@ -23,6 +23,8 @@
 
     element.style[property] = color;
     input.value = color;
+
+    return color;
   }
 
   window.colorize = {
