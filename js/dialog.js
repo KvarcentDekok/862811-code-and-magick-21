@@ -1,55 +1,54 @@
 "use strict";
 
-(function () {
-  const setupDialogElement = document.querySelector(`.setup`);
-  const dialogHandle = setupDialogElement.querySelector(`.upload`);
+const setupDialogElement = document.querySelector(`.setup`);
+const dialogHandle = setupDialogElement.querySelector(`.upload`);
 
-  dialogHandle.addEventListener(`mousedown`, function (evt) {
-    evt.preventDefault();
+dialogHandle.addEventListener(`mousedown`, function (evt) {
+  evt.preventDefault();
 
-    let startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
+  let startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  let isDragged = false;
+
+  function onMouseMove(moveEvt) {
+    moveEvt.preventDefault();
+
+    isDragged = true;
+
+    const shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
     };
 
-    let isDragged = false;
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
 
-    function onMouseMove(moveEvt) {
-      moveEvt.preventDefault();
+    setupDialogElement.style.top = (setupDialogElement.offsetTop - shift.y) + `px`;
+    setupDialogElement.style.left = (setupDialogElement.offsetLeft - shift.x) + `px`;
 
-      isDragged = true;
+  }
 
-      const shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+  function onMouseUp(upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener(`mousemove`, onMouseMove);
+    document.removeEventListener(`mouseup`, onMouseUp);
+
+    if (isDragged) {
+      const onClickPreventDefault = function (clickEvt) {
+        clickEvt.preventDefault();
+        dialogHandle.removeEventListener(`click`, onClickPreventDefault);
       };
-
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
-
-      setupDialogElement.style.top = (setupDialogElement.offsetTop - shift.y) + `px`;
-      setupDialogElement.style.left = (setupDialogElement.offsetLeft - shift.x) + `px`;
-
+      dialogHandle.addEventListener(`click`, onClickPreventDefault);
     }
+  }
 
-    function onMouseUp(upEvt) {
-      upEvt.preventDefault();
+  document.addEventListener(`mousemove`, onMouseMove);
+  document.addEventListener(`mouseup`, onMouseUp);
+});
 
-      document.removeEventListener(`mousemove`, onMouseMove);
-      document.removeEventListener(`mouseup`, onMouseUp);
-
-      if (isDragged) {
-        const onClickPreventDefault = function (clickEvt) {
-          clickEvt.preventDefault();
-          dialogHandle.removeEventListener(`click`, onClickPreventDefault);
-        };
-        dialogHandle.addEventListener(`click`, onClickPreventDefault);
-      }
-    }
-
-    document.addEventListener(`mousemove`, onMouseMove);
-    document.addEventListener(`mouseup`, onMouseUp);
-  });
-})();
