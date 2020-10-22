@@ -7,6 +7,7 @@ module.exports = {
     "./js/colorize.js",
     "./js/stat.js",
     "./js/setup.js",
+    "./js/avatar.js",
     "./js/backend.js",
     "./js/similar-wizards.js",
     "./js/dialog.js",
