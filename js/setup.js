@@ -49,12 +49,7 @@ function closePopup() {
 }
 
 function errorSubmit(errorMessage) {
-  const node = document.createElement(`div`);
-
-  node.classList.add(`error`);
-  node.textContent = errorMessage;
-
-  document.body.insertAdjacentElement(`afterbegin`, node);
+  window.util.addError(errorMessage);
 }
 
 function submitForm(evt) {

@@ -22,8 +22,18 @@ function getRandomElement(array) {
   return array[window.util.getRandomInt(0, array.length - 1)];
 }
 
+function addErrorMessage(message) {
+  const node = document.createElement(`div`);
+
+  node.classList.add(`error`);
+  node.textContent = message;
+
+  document.body.insertAdjacentElement(`afterbegin`, node);
+}
+
 window.util = {
   getRandomInt: getRandomInteger,
   getMaxElem: getMaxElement,
-  getRandomElem: getRandomElement
+  getRandomElem: getRandomElement,
+  addError: addErrorMessage
 };
